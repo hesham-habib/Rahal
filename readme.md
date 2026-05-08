@@ -156,3 +156,63 @@ Dark bg:   #0f0f14
 Light bg:  #F5F5F7
 Top bar:   #1a1a2e
 ```
+
+---
+
+## Getting Started (Local Development)
+
+**Prerequisites:** Node.js 18+
+
+```bash
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+```
+
+The app runs at `http://localhost:5173`.
+
+### Environment Variables
+
+Copy `.env.example` to `.env.local` and fill in your key:
+
+```bash
+cp .env.example .env.local
+```
+
+| Variable | Required | Description |
+|---|---|---|
+| `VITE_ANTHROPIC_API_KEY` | Pro feature | Anthropic API key for the AI assistant |
+
+> **Note:** The AI assistant currently calls the Anthropic API directly from the browser. For production, this should be proxied through a backend (e.g. a Vercel Edge Function) to keep the API key server-side.
+
+---
+
+## Deployment (Vercel)
+
+1. Push this repo to GitHub.
+2. Import it in the [Vercel dashboard](https://vercel.com/new).
+3. Vercel auto-detects Vite — no framework override needed.
+4. Add `VITE_ANTHROPIC_API_KEY` under **Settings → Environment Variables**.
+5. Deploy.
+
+The `vercel.json` at the repo root handles SPA routing (all paths fall back to `index.html`).
+
+---
+
+## Project Structure
+
+```
+rahal/
+├── autotrack_app.tsx   # Main React app (single-file component)
+├── src/
+│   └── main.tsx        # React entry point
+├── index.html          # HTML shell
+├── vite.config.ts      # Vite build config
+├── tsconfig.json       # TypeScript project references
+├── tsconfig.app.json   # App TypeScript config
+├── tsconfig.node.json  # Vite/Node TypeScript config
+├── vercel.json         # Vercel SPA rewrite rules
+└── .env.example        # Environment variable template
+```
