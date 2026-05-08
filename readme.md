@@ -216,3 +216,5 @@ rahal/
 ├── vercel.json         # Vercel SPA rewrite rules
 └── .env.example        # Environment variable template
 ```
+
+Thanks
