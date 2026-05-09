@@ -10,7 +10,7 @@
 |---|---|
 | App name | **Rahal رحّال** (meaning: traveler in Arabic) |
 | Previous name | AutoTrack (discarded — name already taken) |
-| Support email | support@rahal.app |
+| Support email | <support@rahal.app> |
 | Target market | Egypt (primary), Arabic-speaking markets (secondary) |
 | App language | English + Arabic (full toggle, RTL support) |
 | App type | Mobile-optimized PWA → later wrapped as APK (Capacitor) |

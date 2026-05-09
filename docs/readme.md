@@ -1,5 +1,6 @@
 # Rahal رحّال — Vehicle Manager App
-### Egypt's Smart Vehicle Manager
+
+**Egypt's Smart Vehicle Manager**
 
 ---
 
@@ -44,7 +45,7 @@ The app is built as a **React PWA (Progressive Web App)** that can be installed 
 | Meaning | Traveler (Arabic) |
 | Previous name | AutoTrack (discarded — name already taken on App Store) |
 | Target market | Egypt (primary), Arabic-speaking markets (secondary) |
-| Support email | support@rahal.app |
+| Support email | <support@rahal.app> |
 | Support phone | +20 100 000 0000 |
 | App type | PWA → Capacitor APK + IPA |
 | App version | 1.0.0 |
@@ -351,7 +352,7 @@ Two rounds of logo exploration have been completed — 12 total designs.
 
 ## 11. Color Palette & Design System
 
-```
+```text
 Primary purple:    #6C5CE7
 Primary bg light:  #EDE9FE
 Success green:     #00B894
@@ -444,7 +445,7 @@ The app is fully functional as a React artifact/PWA demo with the following work
 
 ## 14. Recommended Backend Stack
 
-```
+```text
 Firebase Authentication  →  Phone OTP, user sessions
 Firestore               →  All user data, logs, reminders, vehicles
 Firebase Storage        →  Photos, videos, audio files
@@ -500,6 +501,7 @@ All sensitive API keys (Claude, Paymob, Google Maps) must be stored as Firebase 
 - Ad formats: banner inside Home screen, interstitial on report generation
 
 ### Revenue Projections
+
 | Subscribers | Monthly Revenue |
 |---|---|
 | 50 Pro users | ~2,450 EGP |

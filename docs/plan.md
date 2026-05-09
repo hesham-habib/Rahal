@@ -1,4 +1,5 @@
 # Plan.md — Rahal رحّال
+
 ## Development Checklist
 
 > ✅ Done · 🔄 In progress · ⏳ Pending decision · 🔧 Needs building · 👤 Owner action required
@@ -131,7 +132,7 @@
 
 ## Priority Order Recommendation
 
-```
+```text
 1. ✅ Pick the logo  (owner)
 2. ✅ Apply logo to app  (Claude)
 3. ✅ Set up Firebase  (owner)
