@@ -1,19 +1,31 @@
 # Rahal رحّال — Vehicle Manager App
 
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-planned-FFCA28?logo=firebase&logoColor=black)
+![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?logo=vercel&logoColor=white)
+![License](https://img.shields.io/badge/License-Proprietary-red)
+
+---
+
 ## Overview
+
 Rahal (رحّال) is an Egyptian-market smart vehicle management app built as a mobile-optimized PWA (Progressive Web App) using React. It helps car owners track fuel, maintenance, repairs, insurance, and registration — all powered by an AI assistant that lets users log data by simply describing what happened in natural language.
 
 ---
 
 ## App Name
+
 - **English:** Rahal
 - **Arabic:** رحّال
 - **Meaning:** Traveler (Arabic)
-- **Support email:** support@rahal.app
+- **Support email:** <support@rahal.app>
 
 ---
 
 ## Tech Stack
+
 - **Frontend:** React (artifact), mobile-optimized PWA
 - **AI:** Claude Sonnet 4 via Anthropic API (`claude-sonnet-4-20250514`)
 - **Payments:** Paymob (Egyptian market — Fawry, Visa, Mastercard, Meeza)
@@ -77,12 +89,14 @@ Rahal (رحّال) is an Egyptian-market smart vehicle management app built as a
    - Progress bars showing proximity to trigger
 
 6. **Reports & Insights**
-   - Time range toggle: 1M · 3M · 6M · 1Y · All
+   - Time range toggle: 1M · 3M · 6M · 1Y · All time
+   - Bar chart dynamically updates — wider view for 1Y shows all 12 months
+   - All 4 metrics (total spend, economy, fill-ups, service events) recalculate per selected range
    - Cost breakdown by category with percentage bars
-   - Monthly fuel spend bar chart
    - AI-generated insight card
-   - CSV export (Pro)
+   - CSV export includes the selected range in the filename (Pro)
    - PDF export (planned for production)
+   - One full year of data pre-loaded so reports look realistic across all time ranges
 
 7. **Account**
    - 4 sub-tabs: Profile · Vehicle · Media · Plan
@@ -90,9 +104,9 @@ Rahal (رحّال) is an Egyptian-market smart vehicle management app built as a
    - Car photo upload
    - Media gallery (photos, videos, audio) — Pro feature
    - Subscription plan display with trial countdown
-   - Settings drawer (gear icon top-right):
-     - Language toggle: English ↔ Arabic (full RTL support)
-     - Dark / Light mode toggle
+   - Settings drawer (gear icon, top-right — accessible from any account sub-tab):
+     - Language toggle: English ↔ Arabic (full RTL layout applied instantly)
+     - Dark / Light mode toggle with smooth animation
      - FAQ (4 questions, expandable)
      - Feedback (star rating + text)
      - Contact us (email + phone)
@@ -104,33 +118,72 @@ Rahal (رحّال) is an Egyptian-market smart vehicle management app built as a
 
 ---
 
-## Security Features (Implemented)
+## Security Features
 
-| Layer | Implementation |
+### Client-Side Layers (Implemented)
+
+**1. Input Sanitization**
+- Strip HTML/script tags from all text inputs
+- Prevent XSS (cross-site scripting) attacks
+- Validate all fields before saving (type, length, format)
+
+**2. Phone Number Validation**
+- Enforce Egyptian format only (01x xxxx xxxx)
+- Block fake/malformed numbers
+
+**3. Rate Limiting (UI side)**
+- Lock OTP attempts after 3 wrong tries (5-minute cooldown)
+- Lock login after 5 failed attempts with countdown timer
+
+**4. Trial Abuse Prevention**
+- Hash and store all 5 identifiers (phone + email + plate + VIN + device fingerprint)
+- Block registration if any identifier matches an existing trial
+
+**5. Session Security**
+- Auto-logout after 30 minutes of inactivity
+- Session token expiry
+
+**6. Data Validation**
+- Reject impossible values (odometer going backwards, negative costs, future dates)
+- Max character limits on all fields
+
+**7. AI Security**
+- System prompt includes anti-injection rules
+- All AI responses sanitized before display or storage
+- Rate-limited to 20 messages per minute
+
+**8. Media Security**
+- Photos max 5MB, media max 20MB
+- Filenames sanitized on upload
+
+### What Requires a Real Backend
+
+| Threat | Solution |
 |---|---|
-| Input sanitization | All text fields strip HTML, script tags, special chars |
-| Phone validation | Egyptian format only: 01x xxxx xxxx |
-| Email validation | Regex format check |
-| Password policy | Minimum 8 characters |
-| Plate/VIN validation | Length and format checks |
-| OTP brute-force protection | Locked after 3 wrong attempts (5-min cooldown) |
-| Login rate limiting | UI-level lockout with countdown |
-| Trial abuse prevention | Hashes: email + phone + plate + VIN + device fingerprint |
-| Odometer validation | Cannot log a reading lower than previous |
-| Date validation | Future dates blocked on log entries |
-| File size limits | Photos max 5MB, media max 20MB |
-| Session timeout | Auto-logout after 30 minutes of inactivity |
-| AI prompt injection prevention | System prompt includes anti-injection rules |
-| AI output sanitization | All AI responses sanitized before display/storage |
-| AI rate limiting | 20 messages per minute max |
-| Filename sanitization | Media filenames sanitized on upload |
-| Character limits | All fields have max character limits |
+| API key theft | Store Claude/Paymob keys server-side only — never in the app |
+| Man-in-the-middle | HTTPS + SSL pinning (done via Capacitor) |
+| Database breach | Encrypt all user data at rest (Firebase/Supabase handles this) |
+| Account takeover | Server-side OTP with Twilio/Vonage — not client-side |
+| Brute force | Server-side rate limiting (Cloudflare, Firebase rules) |
+| Payment fraud | Never touch card data — Paymob handles PCI compliance |
+| Reverse engineering | Code obfuscation when building APK (ProGuard) |
+| Root/jailbreak detection | Capacitor plugin: `cordova-plugin-root-detection` |
 
-**Note:** Production security also requires server-side enforcement via Firebase Security Rules, Cloudflare rate limiting, and server-side OTP (Twilio/Vonage). The above covers the client-side layer.
+### Security Stack
+
+| Layer | Tool | Cost |
+|---|---|---|
+| Auth & OTP | Firebase Authentication | Free |
+| Database rules | Firestore Security Rules | Free |
+| API protection | Cloudflare Workers | Free tier |
+| Payment security | Paymob (PCI-DSS compliant) | % per transaction |
+| SSL | Let's Encrypt via Vercel | Free |
+| Key storage | Firebase Environment Variables | Free |
 
 ---
 
 ## Localization
+
 - **Languages:** English, Arabic
 - **Arabic:** Full RTL layout applied via `direction: rtl`
 - **All UI strings** stored in `STRINGS.en` and `STRINGS.ar` objects
@@ -138,16 +191,15 @@ Rahal (رحّال) is an Egyptian-market smart vehicle management app built as a
 
 ---
 
-## Logo Status
-- Logo designs have been explored across 2 rounds (dark and light versions)
-- 6 concepts: Steering wheel, Location pin, Speedometer, Arabic-first, Road perspective, Speed ring
-- **Owner is still deciding** — logo not yet finalized
-- Once chosen, logo will be applied to: top bar, subscription screen, account/plan tab, splash screen
+## Logo & Branding
 
----
+- **Full logo:** Road/journey icon with "Rahal" in English + "رحّال" in Arabic
+- **App icon:** Gradient purple background with a stylized R incorporating road lines — visible in the Plans tab
+- **Logo placement:** Top bar, subscription screen, account/plan tab, splash screen
 
-## Color Palette
-```
+### Color Palette
+
+```text
 Primary:   #6C5CE7 (purple)
 Success:   #00B894 (green)
 Warning:   #EF9F27 (amber)
@@ -203,7 +255,7 @@ The `vercel.json` at the repo root handles SPA routing (all paths fall back to `
 
 ## Project Structure
 
-```
+```text
 rahal/
 ├── autotrack_app.tsx   # Main React app (single-file component)
 ├── src/
@@ -217,4 +269,50 @@ rahal/
 └── .env.example        # Environment variable template
 ```
 
-Thanks
+---
+
+## Roadmap
+
+### v1.0 (Current — MVP)
+- [x] Full PWA with React + Vite
+- [x] All 8 app screens
+- [x] AI assistant (Claude Sonnet 4)
+- [x] Subscription tier system
+- [x] Full dark mode
+- [x] Arabic/English localization with RTL
+- [x] Client-side security layers
+- [x] Paymob integration design
+
+### v1.1 (Next)
+- [ ] Firebase backend (auth, Firestore, storage)
+- [ ] Server-side OTP via Twilio/Vonage
+- [ ] Vercel Edge Function as API proxy (keep keys server-side)
+- [ ] Cloudflare rate limiting
+
+### v1.2
+- [ ] Capacitor build — Android APK
+- [ ] PDF export
+- [ ] Push notifications for reminders
+
+### v2.0
+- [ ] iOS IPA via Capacitor
+- [ ] Trip distance logger
+- [ ] Full media gallery (photos, videos, audio)
+- [ ] Advanced AI insights
+
+---
+
+## License
+
+This project is proprietary software. All rights reserved. Unauthorized copying, distribution, or use is strictly prohibited.
+
+---
+
+## Acknowledgements
+
+- [Anthropic](https://anthropic.com) — Claude Sonnet 4 AI API
+- [Paymob](https://paymob.com) — Egyptian payment gateway
+- [Firebase](https://firebase.google.com) — Planned auth & database
+- [Vercel](https://vercel.com) — Hosting & deployment
+- [Capacitor](https://capacitorjs.com) — Native mobile builds
+- [Vite](https://vitejs.dev) — Frontend build tooling
